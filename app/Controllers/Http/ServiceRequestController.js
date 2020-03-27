@@ -27,7 +27,7 @@ class ServiceRequestController {
 
     switch (authMode) {
       case "my":
-        serviceQuery.where("account_id", accountId);
+        serviceQuery.where("owner_id", user.id);
         break;
 
       default:
@@ -84,7 +84,7 @@ class ServiceRequestController {
 
     if (
       user.id != sr.owner_id &&
-      user.role_cd.toLowerCase().indexOf("admin") < 0
+      (!user.role_cd || user.role_cd.toLowerCase().indexOf("admin") < 0)
     )
       throw new InvalidAccessException();
 
