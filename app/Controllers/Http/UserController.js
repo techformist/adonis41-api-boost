@@ -1,9 +1,13 @@
 "use strict";
 
+/*
+ * This is a demo controller!
+ * What may be classified as business logic has ended up here.
+ * Ideally, you need to move these to a service and include the services here.
+ */
 const User = use("App/Models/User");
 const Persona = use("Persona");
 
-const AuthorizationService = use("App/Services/AuthorizationService");
 const UserNotFoundException = use("App/Exceptions/UserNotFoundException");
 const CatchAllException = use("App/Exceptions/CatchAllException");
 
