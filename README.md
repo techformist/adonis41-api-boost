@@ -219,3 +219,11 @@ Similar tests can be done for any services made available in routes.
 - GET http://localhost:3333/api/v0/sr [admin]
 
 Input and output are JSON - refer migration files for field names. Specify JWT token by logging in as a regular user/admin depending on the authentication type.
+
+## Support Us
+
+I created this boilerplate for a quicker start to projects. I plan to upgrade to v5 when that becomes main stream.
+
+If you are benefited by this, please consider supporting our work!
+
+- [Patreon](https://www.patreon.com/techformist)
