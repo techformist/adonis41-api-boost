@@ -7,12 +7,9 @@ class UserSchema extends Schema {
   up() {
     this.create("users", table => {
       table.increments();
+      table.string("username", 100);
       table
-        .string("username", 80)
-        .notNullable()
-        .unique();
-      table
-        .string("email", 254)
+        .string("email", 255)
         .notNullable()
         .unique();
       table.string("password", 60).notNullable();
@@ -20,7 +17,7 @@ class UserSchema extends Schema {
 
       // I want more!
       table
-        .string("userid", 20)
+        .string("userid", 255)
         .notNullable()
         .unique();
       table.string("mobile_phone", 15);

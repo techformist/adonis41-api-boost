@@ -7,15 +7,25 @@ const User = use("App/Models/User");
 
 const SendMailService = use("App/Services/SendMailService");
 
-Event.on("user::created", async user => {
+Event.on("user::created", async data => {
   /*
    * Event raised by persona when user registers.
    * Send an email wito user to confirm email.
    */
+  const emailToken = querystring.encode({
+    token: data.token
+  });
+
   SendMailService.sendMail({
-    user: user,
-    template: "registration",
-    subject: "Hello! Confirm your registration"
+    data: {
+      ...data.user.toJSON(),
+      token: emailToken,
+      tokenURL: Env.get("FRONTEND_URL") + "/verify?" + emailToken
+    },
+    params: {
+      template: "registration",
+      subject: "Hello! Confirm your registration"
+    }
   });
 });
 

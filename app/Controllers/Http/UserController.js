@@ -39,38 +39,46 @@ class UserController {
    *  - user creation by admin (which may require further validation).
    * Return user details with token upon successful login.
    */
-  async register({ request, auth }) {
+  async register({ request }) {
     const {
-      username,
       userid,
       email,
       password,
+      username,
       start_date,
-      end_date
+      end_date,
+      mobile_phone
     } = request.all();
 
-    const user = await auth.getUser();
-    if (!!user.id && (!user.role_cd || user.role_cd != "admin")) {
-      throw new CatchAllException(
-        "Only administrators can create users. Verify your role in the system."
-      );
-    }
+    // do any data validations here.
 
     const registerUser = await Persona.register({
       userid: userid,
       email: email,
       password: password,
-      password_confirmation: password,
       username: username,
+      password_confirmation: password,
       mobile_phone: mobile_phone,
       start_date: start_date,
       end_date: end_date,
-      account_status: account_status
+      account_status: "Pending"
     });
 
     // Persona creates users and fires events
 
     return request.all();
+  }
+
+  async verifyToken({ request, auth }) {
+    /*
+     * Registration flow.
+     * User clicks on email link as part of registration, goes to a page ..
+     * .. and the page sends token to this service
+     */
+    const { token } = request.all();
+    return await Persona.verifyEmail(token);
+
+    // Event fired by persona. Further processing in events
   }
 
   async forgotPassword({ request, auth }) {
@@ -83,21 +91,9 @@ class UserController {
     // Event fired by persona. Further processing in events
   }
 
-  async verifyToken({ request, auth }) {
-    /*
-     * Forgot password flow.
-     * User clicks on email link, goes to a page ..
-     * .. and the page sends token to this service
-     */
-    const { token } = request.all();
-    return await Persona.verifyEmail(token);
-
-    // Event fired by persona. Further processing in events
-  }
-
   async resetPassword({ request, auth }) {
     /*
-     * Reset password for a given user.
+     * Reset password flow.
      * Also called by client/controller/service after verifying
      * token using `verifyToken` service.
      */
@@ -141,4 +137,20 @@ class UserController {
 
     return token;
   }
+
+  async checkValidUser({ request }) {
+    /*
+     * Return true or false depending on whether userid exists
+     */
+    const { userid } = request.all();
+    const userRec = await User.query()
+      .where("userid", userid)
+      .first();
+
+    const valid = userRec ? false : true;
+
+    return { valid: valid };
+  }
 }
+
+module.exports = UserController;

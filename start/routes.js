@@ -20,6 +20,15 @@ Route.get("/", () => {
   return { greeting: "Hello world in JSON" };
 });
 
+Route.group(() => {
+  Route.post("/auth/register", "UserController.register");
+  Route.post("/auth/login", "UserController.login");
+  Route.post("/auth/verify-token", "UserController.verifyToken");
+  Route.post("/auth/forgot-password", "UserController.forgotPassword");
+  Route.post("/auth/reset-password", "UserController.resetPassword");
+  Route.post("/auth/update-password", "UserController.updatePassword");
+}).prefix("api/v0");
+
 /*
  USER ROUTES
 */
