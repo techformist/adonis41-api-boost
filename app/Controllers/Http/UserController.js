@@ -2,7 +2,7 @@
 
 /*
  * This is a demo controller!
- * What may be classified as business logic has ended up here.
+ * What may be classified as business logic may end up here.
  * Ideally, you need to move these to a service and include the services here.
  */
 const User = use("App/Models/User");
