@@ -1,0 +1,39 @@
+{
+  "name": "adonis-api-app",
+  "version": "4.1.0",
+  "adonis-version": "4.1.0",
+  "description": "AdonisJS v4.1 boilerplate for API server with additives and configurations for a real-world app.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node ace test",
+    "job:run": "node ace run:scheduler",
+    "prod:start": "pm2 start ./ace -- scheduler:run"
+  },
+  "keywords": [
+    "adonisjs",
+    "adonis-app"
+  ],
+  "author": "techformist.com",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@adonisjs/ace": "^5.0.8",
+    "@adonisjs/auth": "^3.0.7",
+    "@adonisjs/bodyparser": "^2.0.5",
+    "@adonisjs/cors": "^1.0.7",
+    "@adonisjs/fold": "^4.0.9",
+    "@adonisjs/framework": "^5.0.9",
+    "@adonisjs/ignitor": "^2.0.8",
+    "@adonisjs/lucid": "^6.1.3",
+    "@adonisjs/mail": "^3.0.9",
+    "@adonisjs/persona": "^1.0.5",
+    "@adonisjs/validator": "^5.0.6",
+    "adonis-scheduler": "^3.0.2",
+    "pg": "^7.18.2"
+  },
+  "devDependencies": {},
+  "autoload": {
+    "App": "./app"
+  }
+}
