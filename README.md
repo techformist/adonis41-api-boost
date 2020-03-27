@@ -24,9 +24,14 @@ That covered a lot of ground, but I found myself creating the same stuff on top 
 
 Oh.. and we also register these packages :)
 
-## Additional Functions
+## Additional Functionality
 
-1. Add 'sensible' user attributes like status, start date, etc. See
+1. Complete user registration, change password flow with email - thanks to Persona and Mail
+1. Use mail templates and do mail-merge (replace placeholders in template with data) using Adonis views
+1. Add 'sensible' user attributes like status, start date, etc. See the user migration file for `user`
+1. Simple authorisation flow using user role. See `app/services/AuthorisationService` to know more
+1. A sample `Service Request` entity that demonstrates authenticated routes
+1. Sample batch job that runs daily
 
 Find more superficial and minor changes at the end of this page.
 
@@ -65,6 +70,24 @@ Run scripts in `package.json` to execute -
 
 1. PM2 (production)
 1. Job scheduler using Adonis scheduler
+
+#### Date Format Conversion
+
+Date format changes for entities as demonstrated in User and Service Request models.
+
+#### Test Routes
+
+Test routes accessible to an admin to test batch routines, and send email functionality.
+
+#### Test Mails
+
+Reduce risk of emails being sent out from non-production / test environments. You have to explicitly whitelist email ids that can receive emails in non-production environments.
+
+#### Exceptions
+
+Standard exceptions and exception handling - this is standard behaviour in AdonisJS, but ignored by many.
+
+See `app/services/SendEmailService.js`.
 
 ## Quick Tests
 
