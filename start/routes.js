@@ -27,6 +27,7 @@ Route.group(() => {
   Route.post("/auth/forgot-password", "UserController.forgotPassword");
   Route.post("/auth/reset-password", "UserController.resetPassword");
   Route.post("/auth/update-password", "UserController.updatePassword");
+  Route.post("/auth/check-valid-user", "UserController.checkValidUser");
 }).prefix("api/v0");
 
 /*
@@ -57,7 +58,7 @@ Route.group(() => {
   Route.post("/test-mail", () => {
     const user = {
       username: "John Doe",
-      email: "test1@test.com"
+      email: "test1@test.com",
     };
     SendMailService.sendMail({ user: user });
   });
