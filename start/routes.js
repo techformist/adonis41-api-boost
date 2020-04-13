@@ -34,7 +34,7 @@ Route.group(() => {
  USER ROUTES
 */
 Route.group(() => {
-  Route.get("/my-sr", "ServiceRequestController.indexMy");
+  Route.get("/sr-my", "ServiceRequestController.indexMy");
   Route.post("/sr", "ServiceRequestController.create");
   Route.patch("/sr/:id", "ServiceRequestController.update");
 })
