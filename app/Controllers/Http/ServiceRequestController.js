@@ -13,6 +13,7 @@ const ResourceNotExistException = use(
 );
 const InvalidAccessException = use("App/Exceptions/InvalidAccessException");
 
+const ignoreEditFields = ["created_at", "updated_at", "id", "owner"];
 /**
  * Resourceful controller for interacting with servicerequests
  */
@@ -36,12 +37,30 @@ class ServiceRequestController {
 
     if (query) {
       // you can use sanitisor logic here
+      // dummy
       query = query
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/'/g, "&#x27;")
         .replace(/\//g, "&#x2F;");
       let queryObj = JSON.parse(query);
+
+      if (queryObj["description"]) {
+        serviceQuery.where(
+          "description",
+          "like",
+          "%" + queryObj["description"] + "%"
+        );
+        delete queryObj["description"];
+      }
+      if (queryObj["sr_number"]) {
+        serviceQuery.where(
+          "description",
+          "like",
+          "%" + queryObj["sr_number"] + "%"
+        );
+        delete queryObj["sr_number"];
+      }
 
       if (queryObj) serviceQuery.where(queryObj);
     }
@@ -58,7 +77,7 @@ class ServiceRequestController {
 
   async create({ request, auth }) {
     const user = await auth.getUser();
-    const data = request.all();
+    const data = request.except(ignoreEditFields);
 
     // this overrides any userid sent in request
     // can be more sophisticated by allowing only certain roles to change userids
@@ -67,7 +86,6 @@ class ServiceRequestController {
     const sr = new ServiceRequest();
 
     sr.fill(data);
-
     await sr.save();
 
     return sr;
@@ -75,7 +93,7 @@ class ServiceRequestController {
 
   async update({ params, request, auth }) {
     const user = await auth.getUser();
-    const data = request.all();
+    const data = request.except(ignoreEditFields);
     const { id } = params;
 
     if (!id) throw new ResourceNotExistException();
@@ -92,7 +110,15 @@ class ServiceRequestController {
     // or even throwing an exception if invalid data is sent here.
     delete data["owner_id"];
 
+    // following line updates everything coming in
+    // sr.merge(data);
+
+    // it is better to pick up specific fields
+    // .. or delete incoming fields that are not relevant - like owner_id
+    // we did a `request.except()` at the beginning to get data. So, we're good
+
     sr.merge(data);
+
     await sr.save();
 
     return sr;
