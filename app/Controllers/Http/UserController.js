@@ -22,7 +22,7 @@ class UserController {
     const userDetails = await User.query()
       .where("userid", userid)
       .setHidden(["password"])
-      .fetch();
+      .first();
 
     const userJSON = userDetails.toJSON();
 
@@ -51,7 +51,7 @@ class UserController {
       username,
       start_date,
       end_date,
-      mobile_phone
+      mobile_phone,
     } = request.all();
 
     // do any data validations here.
@@ -65,7 +65,7 @@ class UserController {
       mobile_phone: mobile_phone,
       start_date: start_date,
       end_date: end_date,
-      account_status: "Pending"
+      account_status: "Pending",
     });
 
     // Persona creates users and fires events
@@ -80,8 +80,8 @@ class UserController {
      * .. and the page sends token to this service
      */
     const { token } = request.all();
-    return await Persona.verifyEmail(token);
-
+    await Persona.verifyEmail(token);
+    return { result: true };
     // Event fired by persona. Further processing in events
   }
 
@@ -91,7 +91,7 @@ class UserController {
      */
     const data = request.all();
     await Persona.forgotPassword(data["userid"]);
-
+    return { result: true };
     // Event fired by persona. Further processing in events
   }
 
@@ -105,7 +105,7 @@ class UserController {
 
     await Persona.updatePasswordByToken(data["token"], {
       password: data["password"],
-      password_confirmation: data["password"]
+      password_confirmation: data["password"],
     });
 
     // Event fired by persona. Further processing in events
@@ -127,7 +127,7 @@ class UserController {
     await Persona.updatePassword(user, {
       old_password: old_password,
       password: new_password,
-      password_confirmation: new_password
+      password_confirmation: new_password,
     });
 
     let token;
@@ -147,9 +147,7 @@ class UserController {
      * Return true or false depending on whether userid exists
      */
     const { userid } = request.all();
-    const userRec = await User.query()
-      .where("userid", userid)
-      .first();
+    const userRec = await User.query().where("userid", userid).first();
 
     const valid = userRec ? false : true;
 
